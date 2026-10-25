@@ -1,0 +1,15 @@
+{
+  "Ebbinghaus": {
+    "S0": 25
+  },
+  "GenAgents": {
+    "decay": 0.99
+  },
+  "ImpDecay": {
+    "S0": 200
+  },
+  "VRS": {
+    "b0": 50,
+    "half_life": 100
+  }
+}
