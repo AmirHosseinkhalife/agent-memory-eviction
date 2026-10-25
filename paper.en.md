@@ -6,11 +6,12 @@ Alternative titles:
   - Forgetting Is Forever: Online Algorithms for Bounded Memory in LLM Agents
 Target venues: arXiv (cs.AI / cs.LG, cross-list cs.DS) → NeurIPS / ICLR / AAMAS / TMLR
 Length target: 8–9 pages main text + unlimited appendix
-Status legend: [TODO] remaining author-specific items (name, affiliation, acknowledgments)
+Status: complete; author information final
 -->
 
-**Authors:** Amir Hossein Khalifeh¹\*, Mehdi Gholami¹
-¹ Independent Researchers, Tehran, Iran
+**Authors:** Amir Hossein Khalifeh¹\*, Mehdi Gholami²
+¹ Independent Researcher, Tehran, Iran
+² Islamic Azad University, Tehran, Iran
 \*Corresponding author: Amirkhalife.biz@gmail.com
 
 **Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
@@ -502,9 +503,9 @@ agent-memory-eviction/
 
 Forgetting policies interact with privacy and safety. On the one hand, deliberate forgetting supports data minimization and the right to be forgotten; on the other, forgetting a safety-critical instruction or a user's medical constraint can cause harm. Our results show that value-oblivious policies are especially prone to the latter, and that this risk can be quantified before deployment. Value estimates themselves may encode biases about what is "important" for different users; auditing them is an important complement to this work. This study uses only synthetic data and involves no human subjects.
 
-## Acknowledgments
+## Author Contributions
 
-[TODO — omit in anonymous submissions]
+**Amir Hossein Khalifeh:** conceptualization, methodology, theoretical analysis, software (MemSim), experiments, and writing of the technical content. **Mehdi Gholami:** support throughout the project and preparation of the English manuscript. Both authors approved the final version.
 
 ---
 
