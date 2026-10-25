@@ -10,7 +10,7 @@ Status legend: [TODO] remaining author-specific items (name, affiliation, acknow
 -->
 
 **Authors:** Amir Hossein Khalifeh¹\*, Mehdi Gholami¹
-¹ [Affiliation — TODO], Iran
+¹ Independent Researchers, Tehran, Iran
 \*Corresponding author: Amirkhalife.biz@gmail.com
 
 **Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction

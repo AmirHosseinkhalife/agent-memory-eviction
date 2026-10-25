@@ -12,7 +12,7 @@
 -->
 
 **نویسندگان:** امیرحسین خلیفه¹\*، مهدی غلامی¹
-¹ [وابستگی سازمانی — TODO]، ایران
+¹ پژوهشگران مستقل، تهران، ایران
 \*نویسنده مسئول: Amirkhalife.biz@gmail.com
 
 **کد و داده:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
