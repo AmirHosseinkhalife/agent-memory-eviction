@@ -6,3 +6,4 @@ code/results_log*.txt
 code/llm_log.txt
 # LoCoMo is distributed by its authors (CC BY-NC 4.0); download it with code/data/get_locomo.sh
 code/data/locomo/locomo10.json
+build/
