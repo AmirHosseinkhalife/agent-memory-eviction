@@ -11,7 +11,7 @@ Status: complete; author information final
 
 **Authors:** Amir Hossein Khalifeh¹\*, Mehdi Gholami²
 ¹ Independent Researcher, Tehran, Iran
-² Islamic Azad University, Tehran, Iran
+² Islamic Azad University, Karaj Branch, Karaj, Iran
 \*Corresponding author: Amirkhalife.biz@gmail.com
 
 **Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
