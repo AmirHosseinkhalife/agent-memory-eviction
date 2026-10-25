@@ -1,6 +1,8 @@
 # What Should an Agent Forget?
 ### A Competitive Analysis of Memory Eviction for LLM Agents
 
+**Amir Hossein Khalifeh, Mehdi Gholami** · Contact: Amirkhalife.biz@gmail.com
+
 This repository contains the paper and **MemSim**, the simulator and exact offline oracle behind it.
 
 - 📄 Paper (English): [`paper.en.md`](paper.en.md)
@@ -69,7 +71,7 @@ code/figures/                all figures (PDF + PNG)
 ```bibtex
 @misc{agentmemoryeviction2026,
   title  = {What Should an Agent Forget? A Competitive Analysis of Memory Eviction for LLM Agents},
-  author = {{The agent-memory-eviction authors}},
+  author = {Khalifeh, Amir Hossein and Gholami, Mehdi},
   year   = {2026},
   url    = {https://github.com/AmirHosseinkhalife/agent-memory-eviction}
 }

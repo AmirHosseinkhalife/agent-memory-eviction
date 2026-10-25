@@ -9,8 +9,9 @@ Length target: 8–9 pages main text + unlimited appendix
 Status legend: [TODO] remaining author-specific items (name, affiliation, acknowledgments)
 -->
 
-**Authors:** [Name]¹
-¹ [Affiliation], [City, Country] — [email]
+**Authors:** Amir Hossein Khalifeh¹\*, Mehdi Gholami¹
+¹ [Affiliation — TODO], Iran
+\*Corresponding author: Amirkhalife.biz@gmail.com
 
 **Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
 
