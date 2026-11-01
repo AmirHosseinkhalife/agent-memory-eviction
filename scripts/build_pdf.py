@@ -1,10 +1,12 @@
-"""Build a print-ready PDF of the Persian paper.
+"""Build print-ready PDFs of the Persian documents.
 
-    python scripts/build_pdf.py            # -> paper.fa.pdf
+    python scripts/build_pdf.py                 # -> paper.fa.pdf
+    python scripts/build_pdf.py helper          # -> helper.pdf
+    python scripts/build_pdf.py paper helper    # both
 
-Pipeline: paper.fa.md -> HTML (Python-Markdown; math kept for KaTeX) -> PDF printed by
+Pipeline: Markdown -> HTML (Python-Markdown; math kept for KaTeX) -> PDF printed by
 headless Microsoft Edge -> page numbers stamped with pypdf/reportlab.
-KaTeX is loaded from jsDelivr at build time, so building needs internet; the PDF does not.
+KaTeX and fonts are read from presentation/assets, so building works offline.
 """
 
 import io
@@ -14,16 +16,14 @@ import sys
 from pathlib import Path
 
 import markdown
+from pymdownx import slugs
 from pypdf import PdfReader, PdfWriter
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "paper.fa.md"
-HTML = ROOT / "build" / "paper.fa.html"
-OUT = ROOT / "paper.fa.pdf"
 EDGE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
-KATEX = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist"
+KATEX = "presentation/assets/katex"          # relative to the repository root (the HTML's <base>)
 
 CSS = r"""
 @font-face { font-family: "Vazirmatn"; src: url("presentation/assets/fonts/Vazirmatn-wght.woff2") format("woff2"); font-weight: 100 900; }
@@ -90,18 +90,24 @@ h2, h3 { page-break-after: avoid; }
 p.keep { break-after: avoid; page-break-after: avoid; font-weight: 500; }
 p.ragged { text-align: right; }
 .authors br + br { display: none; }
+
+/* glossary entries (helper.md): "#### term : meaning" followed by a short explanation */
+h4 { font-size: 10.6pt; font-weight: 700; color: var(--ink); margin: 11pt 0 2pt; padding-right: 8pt; border-right: 2.5pt solid var(--accent); line-height: 1.7; break-after: avoid; page-break-after: avoid; }
+h4 + p { margin: 0 0 4pt; padding-right: 10.5pt; color: #2e333b; font-size: 9.8pt; }
+h2 + p a, ol a { color: var(--accent); }
 """
 
 
-def preprocess(md: str) -> str:
+def preprocess(md: str, paper: bool = True) -> str:
     md = re.sub(r"<!--.*?-->", "", md, flags=re.S)                 # authoring notes
     md = re.sub(r"</?div[^>]*>", "", md)                            # direction wrappers (CSS handles it)
     md = re.sub(r"</?details>|<summary>.*?</summary>", "", md)      # expand collapsibles
-    # Author block (between the title and the first rule): keep each line on its own line.
-    head, sep, rest = md.partition("\n---\n")
-    title, _, authors = head.partition("\n\n")
-    authors = "\n".join(l.rstrip() + "<br>" if l.strip() else l for l in authors.strip().splitlines())
-    md = title + "\n\n" + authors + "\n" + sep + rest
+    if paper:
+        # Author block (between the title and the first rule): keep each line on its own line.
+        head, sep, rest = md.partition("\n---\n")
+        title, _, authors = head.partition("\n\n")
+        authors = "\n".join(l.rstrip() + "<br>" if l.strip() else l for l in authors.strip().splitlines())
+        md = title + "\n\n" + authors + "\n" + sep + rest
     # Display math on a blockquote line must be its own paragraph for arithmatex.
     md = re.sub(r"^> \$\$(.*)\$\$\s*$", lambda m: ">\n> $$\n> " + m.group(1) + "\n> $$\n", md, flags=re.M)
     md = re.sub(r"^\$\$(.*)\$\$\s*$", lambda m: "\n$$\n" + m.group(1) + "\n$$\n", md, flags=re.M)
@@ -110,10 +116,11 @@ def preprocess(md: str) -> str:
     return md
 
 
-def postprocess(html: str) -> str:
-    # Title block: everything between the title and the first <hr> is the author block.
-    html = re.sub(r"(</h1>)(.*?)(<hr\s*/?>)", lambda m: m.group(1) + '<div class="authors">' + m.group(2) + "</div>" + m.group(3),
-                  html, count=1, flags=re.S)
+def postprocess(html: str, paper: bool = True) -> str:
+    if paper:
+        # Title block: everything between the title and the first <hr> is the author block.
+        html = re.sub(r"(</h1>)(.*?)(<hr\s*/?>)", lambda m: m.group(1) + '<div class="authors">' + m.group(2) + "</div>" + m.group(3),
+                      html, count=1, flags=re.S)
     # Abstract box: from the abstract heading to the next <hr>.
     html = re.sub(r"(<h2[^>]*>چکیده</h2>.*?)(<hr\s*/?>)", r'<div class="abstract">\1</div>\2', html, count=1, flags=re.S)
     # Figures: a paragraph holding only an image, and the bold caption paragraph after it.
@@ -135,14 +142,33 @@ def postprocess(html: str) -> str:
     return html
 
 
-def build_html():
-    md = preprocess(SRC.read_text(encoding="utf-8"))
-    body = markdown.markdown(md, extensions=["tables", "fenced_code", "pymdownx.arithmatex"],
-                             extension_configs={"pymdownx.arithmatex": {"generic": True}})
-    body = postprocess(body)
-    HTML.parent.mkdir(exist_ok=True)
-    HTML.write_text(f"""<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><base href="../">
-<title>ایجنت چه چیزی را باید فراموش کند؟</title>
+def md_to_html(md: str, paper: bool = True) -> str:
+    """Markdown -> HTML body. Math is left as \\( \\) / \\[ \\] for KaTeX; headings get
+    GitHub-style Unicode ids so in-document links (e.g. a table of contents) work."""
+    md = preprocess(md, paper)
+    body = markdown.markdown(
+        md, extensions=["tables", "fenced_code", "pymdownx.arithmatex", "toc"],
+        extension_configs={"pymdownx.arithmatex": {"generic": True},
+                           "toc": {"slugify": slugs.slugify(case="lower")}})
+    return postprocess(body, paper)
+
+
+DOCS = {
+    "paper": dict(src="paper.fa.md", out="paper.fa.pdf", paper=True,
+                  title="ایجنت چه چیزی را باید فراموش کند؟",
+                  meta="What Should an Agent Forget? (Persian version)"),
+    "helper": dict(src="helper.md", out="helper.pdf", paper=False,
+                   title="راهنمای اصطلاحات، مخفف‌ها و فرمول‌های مقاله",
+                   meta="Glossary: What Should an Agent Forget?"),
+}
+
+
+def build_html(doc: dict) -> Path:
+    body = md_to_html((ROOT / doc["src"]).read_text(encoding="utf-8"), doc["paper"])
+    html = ROOT / "build" / (Path(doc["src"]).stem + ".html")
+    html.parent.mkdir(exist_ok=True)
+    html.write_text(f"""<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><base href="../">
+<title>{doc["title"]}</title>
 <link rel="stylesheet" href="{KATEX}/katex.min.css">
 <style>{CSS}</style></head><body>
 {body}
@@ -152,17 +178,18 @@ def build_html():
   {{left: "\\\\[", right: "\\\\]", display: true}}, {{left: "\\\\(", right: "\\\\)", display: false}}],
   throwOnError: false}});</script>
 </body></html>""", encoding="utf-8")
+    return html
 
 
-def print_pdf(tmp: Path):
+def print_pdf(html: Path, tmp: Path):
     subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
                     "--virtual-time-budget=30000", "--run-all-compositor-stages-before-draw",
                     f"--user-data-dir={ROOT / 'build' / 'edge-profile'}",
-                    f"--print-to-pdf={tmp}", HTML.resolve().as_uri()],
+                    f"--print-to-pdf={tmp}", html.resolve().as_uri()],
                    check=True, capture_output=True, timeout=180)
 
 
-def stamp_page_numbers(src: Path, dst: Path):
+def stamp_page_numbers(src: Path, dst: Path, meta_title: str):
     reader, writer = PdfReader(str(src)), PdfWriter()
     n = len(reader.pages)
     for i, page in enumerate(reader.pages, 1):
@@ -179,17 +206,18 @@ def stamp_page_numbers(src: Path, dst: Path):
         buf.seek(0)
         page.merge_page(PdfReader(buf).pages[0])
         writer.add_page(page)
-    writer.add_metadata({"/Title": "What Should an Agent Forget? (Persian version)",
-                         "/Author": "Amir Hossein Khalifeh, Mehdi Gholami"})
+    writer.add_metadata({"/Title": meta_title, "/Author": "Amir Hossein Khalifeh, Mehdi Gholami"})
     with open(dst, "wb") as f:
         writer.write(f)
     return n
 
 
 if __name__ == "__main__":
-    build_html()
-    tmp = ROOT / "build" / "paper.fa.raw.pdf"
-    print_pdf(tmp)
-    pages = stamp_page_numbers(tmp, OUT)
-    print(f"wrote {OUT} ({pages} pages)")
-    sys.exit(0)
+    for name in (sys.argv[1:] or ["paper"]):
+        doc = DOCS[name]
+        html = build_html(doc)
+        tmp = ROOT / "build" / (Path(doc["out"]).stem + ".raw.pdf")
+        print_pdf(html, tmp)
+        out = ROOT / doc["out"]
+        pages = stamp_page_numbers(tmp, out, doc["meta"])
+        print(f"wrote {out} ({pages} pages)")

@@ -1,0 +1,59 @@
+/* Glossary page (helper.html). Same cinema-dark palette and faces as the presentation. */
+
+@font-face { font-family: "Vazirmatn"; src: url("assets/fonts/Vazirmatn-wght.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Lalezar"; src: url("assets/fonts/lalezar-arabic.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF, U+200C-200E; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/ibm-plex-mono-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+:root {
+  --page: #0a1320;
+  --panel: #15253b;
+  --line: #26405f;
+  --ink: #eef2f7;
+  --muted: #9cb0c6;
+  --amber: #f2a541;
+  --sky: #6fb1e0;
+  --f-display: "Lalezar", "Vazirmatn", Tahoma, sans-serif;
+  --f-body: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); color: var(--ink); }
+body { font-family: var(--f-body); font-size: 16px; line-height: 1.95; }
+[hidden] { display: none !important; }
+a { color: var(--sky); }
+
+.bar { position: sticky; top: 0; z-index: 5; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  background: rgba(10, 19, 32, .94); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.back { color: var(--amber); text-decoration: none; font-weight: 700; white-space: nowrap; }
+.search { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 220px; max-width: 520px; color: var(--muted); font-size: 14px; }
+.search input { flex: 1; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.search input:focus-visible, a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+.count { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+.doc { max-width: 900px; margin: 0 auto; padding-block: 24px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.doc h1 { font-family: var(--f-display); font-weight: 400; color: var(--amber); font-size: clamp(28px, 4vw, 40px); line-height: 1.4; margin: 8px 0 12px; text-wrap: balance; }
+.doc h2 { font-size: 24px; color: var(--amber); border-bottom: 1px solid var(--line); padding-bottom: 6px; margin: 40px 0 12px; scroll-margin-top: 70px; }
+.doc hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+.doc ol, .doc ul { padding-right: 22px; padding-left: 0; }
+
+.entry { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin: 10px 0; }
+.entry h4 { margin: 0 0 4px; font-size: 17px; line-height: 1.8; color: var(--ink); scroll-margin-top: 70px; }
+.entry p { margin: 0; color: #c9d5e3; font-size: 15px; }
+
+code { direction: ltr; unicode-bidi: isolate; font-family: var(--f-mono); font-size: .88em; background: #0f1c2e; border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+pre { direction: ltr; text-align: left; background: #0f1c2e; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; }
+.katex { direction: ltr; unicode-bidi: isolate; font-size: 1.05em; }
+
+.tbl { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--line); padding: 7px 10px; text-align: right; unicode-bidi: plaintext; }
+th { color: var(--muted); font-weight: 500; background: var(--panel); }
+td:first-child { font-family: var(--f-mono); color: var(--amber); white-space: nowrap; }
+
+mark { background: rgba(242, 165, 65, .35); color: inherit; border-radius: 3px; padding: 0 1px; }
+.empty { color: var(--muted); text-align: center; padding: 30px 0; }
+
+@media (max-width: 520px) { body { font-size: 15px; } .entry h4 { font-size: 16px; } }
+@media print { .bar { display: none; } }
