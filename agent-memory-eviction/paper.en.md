@@ -14,7 +14,7 @@ Status: complete; author information final
 ² Islamic Azad University, Karaj Branch, Karaj, Iran
 \*Corresponding author: Amirkhalife.biz@gmail.com
 
-**Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
+**Code & data:** https://github.com/AmirHosseinkhalife/agent-memory-eviction/tree/main/agent-memory-eviction
 
 ---
 
@@ -463,7 +463,7 @@ We introduced the Agent Memory Eviction Problem and showed that the irrevocabili
 
 ## Reproducibility Statement
 
-All code, workload generators, random seeds, hyper-parameter grids, LLM importance scores and raw results are released at https://github.com/AmirHosseinkhalife/agent-memory-eviction. The complete pipeline is reproduced with:
+All code, workload generators, random seeds, hyper-parameter grids, LLM importance scores and raw results are released at https://github.com/AmirHosseinkhalife/agent-memory-eviction/tree/main/agent-memory-eviction. The complete pipeline is reproduced with:
 
 ```
 cd code

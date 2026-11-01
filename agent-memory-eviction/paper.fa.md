@@ -16,7 +16,7 @@
 ² دانشگاه آزاد اسلامی، واحد کرج، کرج، ایران
 \*نویسنده مسئول: Amirkhalife.biz@gmail.com
 
-**کد و داده:** https://github.com/AmirHosseinkhalife/agent-memory-eviction
+**کد و داده:** https://github.com/AmirHosseinkhalife/agent-memory-eviction/tree/main/agent-memory-eviction
 
 ---
 
@@ -470,7 +470,7 @@ MemSim یک بسته پایتونی حدوداً ۱٬۵۰۰ خطی با پنج �
 
 ## بیانیه تکرارپذیری
 
-تمام کدها، مولدهای بار کاری، بذرهای تصادفی، شبکه‌های ابرپارامتر، امتیازهای اهمیت LLM و نتایج خام در https://github.com/AmirHosseinkhalife/agent-memory-eviction منتشر شده‌اند. کل خط لوله با دستورهای زیر بازتولید می‌شود:
+تمام کدها، مولدهای بار کاری، بذرهای تصادفی، شبکه‌های ابرپارامتر، امتیازهای اهمیت LLM و نتایج خام در https://github.com/AmirHosseinkhalife/agent-memory-eviction/tree/main/agent-memory-eviction منتشر شده‌اند. کل خط لوله با دستورهای زیر بازتولید می‌شود:
 
 <div dir="ltr">
 
